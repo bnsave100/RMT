@@ -1,1 +1,1 @@
-web: java -Dfile.encoding=UTF-8 -jar rmt-app/target/rmt-app-1.0-SNAPSHOT.jar
+web: java -Dfile.encoding=UTF-8 -Dserver.port=$PORT -jar rmt-app/target/rmt-app-1.0-SNAPSHOT.jar
