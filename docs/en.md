@@ -1,5 +1,7 @@
 ## RMT
 
+[中文简体](cn.md)
+
 [![OpenJDK Status](https://img.shields.io/badge/OpenJDK-1.8-brightgreen.svg)](https://openjdk.java.net/install/)
 
 A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
@@ -16,7 +18,12 @@ A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
     ```java
       java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar ... 
     ```
-
+* for windows with slim jre
+    
+    ```
+    cmd.exe
+    ```
+    
 ## Develop
 
 1. checkout from github
