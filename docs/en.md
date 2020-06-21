@@ -6,6 +6,7 @@
 
 A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
 
+Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.herokuapp.com/)
 ## Start
 * for docker running
 
