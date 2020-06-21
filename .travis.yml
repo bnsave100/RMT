@@ -18,3 +18,11 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+
+services: docker
+sudo: required
+before_install:
+  - docker build -t helixcs/rmt .
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push helixcs/rmt:latest
