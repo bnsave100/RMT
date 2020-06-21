@@ -1,0 +1,13 @@
+language: java
+install: true
+script: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+dist: trusty
+jdk:
+  - oraclejdk8
+  - openjdk8
+
+notification:
+  email:
+    - zhangjian12424@gmail.com
+  on_success: never
+  on_failure: always
