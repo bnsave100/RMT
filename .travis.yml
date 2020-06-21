@@ -11,3 +11,10 @@ notification:
     - zhangjian12424@gmail.com
   on_success: never
   on_failure: always
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file: RELEASE/*
+  skip_cleanup: true
+  on:
+    tags: true

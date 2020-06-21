@@ -2,6 +2,7 @@
 
 [中文简体](cn.md)
 
+[![Build Status](https://travis-ci.org/Xarrow/RMT.svg?branch=master)](https://travis-ci.org/Xarrow/RMT)
 [![OpenJDK Status](https://img.shields.io/badge/OpenJDK-1.8-brightgreen.svg)](https://openjdk.java.net/install/)
 
 A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
