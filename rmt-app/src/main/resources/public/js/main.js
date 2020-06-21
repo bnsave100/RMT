@@ -6,7 +6,12 @@ var xterm;
 
 // init websocket
 const initWs = () => {
-    ws = new WebSocket('ws://' + location.host + '/terminal')
+    let sec = location.protocol.indexOf("https") > -1
+    if (sec) {
+        ws = new WebSocket('wss://' + location.host + '/terminal')
+    } else {
+        ws = new WebSocket('ws://' + location.host + '/terminal')
+    }
 }
 
 const initXterm = (cols, rows) => {
