@@ -1,30 +1,55 @@
-# rmt - Web tty终端
+## RMT , A Web Terminal
 
-![Maven Package](https://github.com/Xarrow/rmt/workflows/Maven%20Package/badge.svg)
+[中文简体](cn.md)
+
+[![Build Status](https://travis-ci.org/Xarrow/RMT.svg?branch=master)](https://travis-ci.org/Xarrow/RMT)
 [![OpenJDK Status](https://img.shields.io/badge/OpenJDK-1.8-brightgreen.svg)](https://openjdk.java.net/install/)
-[![Build Status](https://travis-ci.org/Xarrow/rmt.svg?branch=master)](https://travis-ci.org/Xarrow/rmt)
 
-rmt (Terminal Control  Manager) ,基于 [Pty4J](https://github.com/JetBrains/pty4j) 的 Web 终端.
+A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
 
-## 开始
+![img](asserts/20200622015739.png)
 
-![img](asserts/20200620031347.png)
+Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.herokuapp.com/)
+## Start
+* for docker running
 
-* docker 运行
+  ```
+    docker pull helixcs/rmt
+  ```
+  
+* for jar running, required jre 1.8+
 
-* 脚本运行
+    ```java
+      java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app.jar 
+    ```
 
-## 拓展
+## Develop
 
+1. checkout from github
 
-## 最后
+    `git@github.com:Xarrow/RMT.git`
 
-* 始于 [cloudterm](https://github.com/javaterminal/cloudterm) , 更胜于此.
-* 献予[瑞梅](https://yuruimei.com).
+2. maven install 
+    
+    `mvn install -Dmaven.test.skip=true`
+    
+3. run with jar
+    
+    `java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app\target\rmt-app-1.0-SNAPSHOT.jar`
+    
+## Expand
+* Protocol
+* Listener
+* SessionManager
+
+## Final
+* For [RuiMei](https://yuruimei.com) .
+* Started from [cloudterm](https://github.com/javaterminal/cloudterm) ,stronger with RMT.
 
 ## LICENSE
 
 Apache2
 
-This Project Powered by Jetbrains OpenSource License
+This Project Powered By Jetbrains OpenSource License
 
+![img](asserts/jetbrains.svg)
