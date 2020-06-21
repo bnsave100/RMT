@@ -38,7 +38,7 @@ A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
 
 ## Final
 * For [RuiMei](https://yuruimei.com) .
-* Started from [cloudterm](https://github.com/javaterminal/cloudterm) ,will strong from RMT.
+* Started from [cloudterm](https://github.com/javaterminal/cloudterm) ,stronger with RMT.
 
 ## LICENSE
 
