@@ -1,4 +1,4 @@
-## RMT , A Web Terminal
+## RMT , A Cloud Web Terminal
 
 [中文简体](cn.md)
 
@@ -8,6 +8,11 @@
 A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
 
 ![img](asserts/20200622015739.png)
+> in Windows
+
+![img](asserts/20200622015739.png)
+> in Linux
+
 
 Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.herokuapp.com/)
 ## Start
@@ -16,13 +21,13 @@ Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.heroku
   ```
     docker pull helixcs/rmt:latest
   
-    docker run -d -e PORT=8081 -e JVM_PARMS="" -p 8081:8081 helixcs/rmt:latest
+    docker run -d -e PORT=8080 -e JVM_PARMS="" -p 8080:8080 helixcs/rmt:latest
   ```
   
 * for jar running, required jre 1.8+
 
     ```java
-      java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app.jar 
+      java -Xms512m -Xmx512m -Xmn256m -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app.jar 
     ```
 
 ## Develop
