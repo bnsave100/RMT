@@ -10,11 +10,12 @@ A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
 ![img](asserts/20200622015739.png)
 > in Windows
 
-![img](asserts/593BE5BB-57ED-453d-B535-394C98D06E2E.png)
+![img](asserts/20200622015740.png)
 > in Linux
 
 
 Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.herokuapp.com/)
+
 ## Quick Start
 
 you can download standalone jar from [release](https://github.com/Xarrow/RMT/releases/).
@@ -47,11 +48,16 @@ you can download standalone jar from [release](https://github.com/Xarrow/RMT/rel
     
     `java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app\target\rmt-app-1.0-SNAPSHOT.jar`
     
-## Just Expand todo
+## Just Expand
+### todo
 * Protocol 
+
+   1. `TerminalMessageQueue`
    
 * Listener
-  I. `TerminalProcessListener`
+
+  1.`TerminalProcessListener`
+  
   ```java
     new TerminalProcessListener() {
                 @Override
@@ -84,7 +90,11 @@ you can download standalone jar from [release](https://github.com/Xarrow/RMT/rel
   Reference at [rmt-examples]() for detail.
   
 * Session
-  I. `TerminalSessionManager`
+
+  1. `SessionWrapper`
+  
+  2. `TerminalSessionManager`
+  
   ```java
      @Bean
         public TerminalSessionManager terminalSessionManager() {
@@ -96,10 +106,18 @@ you can download standalone jar from [release](https://github.com/Xarrow/RMT/rel
   List all sessions by `sessionMap`,get a session use `getSession`,
   event use `p2pSend` or `broadCastSend` to send  messages to client. 
   
+  3. `TerminalSession2ProcessManager`
+  
+  4. ``
+  
 
 * Process
-
-* All In One
+    
+   1. `ProcessWrapper`
+   
+   2. `TerminalSession2ProcessManager`
+   
+  
 
 ## Final
 * For [RuiMei]() .
