@@ -50,7 +50,7 @@ Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.heroku
 * SessionManager
 
 ## Final
-* For [RuiMei](https://yuruimei.com) .
+* For [RuiMei]() .
 * Started from [cloudterm](https://github.com/javaterminal/cloudterm) ,stronger with RMT.
 
 ## LICENSE
