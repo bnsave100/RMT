@@ -49,4 +49,6 @@ public class TerminalThreadHelper {
         new DefaultThreadFactory().setThreadName("stderr"));
     public static ExecutorService writeHandlerThreadPool = Executors.newFixedThreadPool(10,
         new DefaultThreadFactory().setThreadName("stdin"));
+    public static ExecutorService heartbeatHandlerThreadPool = Executors.newFixedThreadPool(10,
+            new DefaultThreadFactory().setThreadName("heartbeat"));
 }

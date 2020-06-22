@@ -73,6 +73,9 @@ public class TerminalHandler extends TextWebSocketHandler {
             case TERMINAL_COMMAND:
                 terminalProcessLifecycle.terminalCommand(terminalRQ);
                 break;
+            case TERMINAL_HEARTBEAT:
+                terminalProcessLifecycle.terminalHeartbeat(terminalRQ);
+                break;
             case TERMINAL_CLOSE:
                 terminalProcessLifecycle.terminalClose(terminalRQ);
                 break;

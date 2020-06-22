@@ -28,4 +28,6 @@ public interface TerminalProcessLifecycle {
     void terminalClose(final TerminalMessage terminalMessage);
 
     void setWebSocketSession(WebSocketSession session);
+
+    void terminalHeartbeat(final TerminalMessage terminalMessage);
 }

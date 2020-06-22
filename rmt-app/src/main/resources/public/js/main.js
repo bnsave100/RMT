@@ -24,6 +24,7 @@ const initXterm = (cols, rows) => {
         cursorBlink: true,
         cursorStyle: "block"
     });
+    xterm.open(document.getElementById('#terminal'), true);
 }
 
 const sendProxy = (message) => {
@@ -46,16 +47,39 @@ const resize = () => {
 
 const initConnect = () => {
     // 1. init terminal
-    debugger
     let {cols, rows} = getTerminalSize()
     initXterm(cols, rows)
     // 2. init ws
     try {
         initWs()
-        xterm.showOverlay("WebSocket Connect Success.")
+        setTimeout(() => {
+            xterm.showOverlay("WebSocket Connect Success.")
+        }, 2000)
     } catch (e) {
-        xterm.showOverlay("WebSocket Connect Failed.")
+        setTimeout(() => {
+            xterm.showOverlay("WebSocket Connect Failed.")
+        }, 2000)
     }
+}
+
+
+// 主动心跳♥
+let retries = 10
+const heartbeat = () => {
+    const heartbeatInterval = setInterval(() => {
+        if (ws.readyState !== WebSocket.OPEN) {
+            if (retries < 1) {
+                xterm.showOverlay("Reconnect Up Max Count,Please Check Your Service.")
+                clearInterval(heartbeatInterval);
+                return;
+            }
+            retries -= 1;
+            initConnect();
+        } else {
+            sendProxy(action('TERMINAL_HEARTBEAT', {}))
+            retries = 10;
+        }
+    }, 5000)
 }
 // -----------
 
@@ -63,10 +87,8 @@ $(() => {
     initConnect()
 
     ws.onopen = (event) => {
-        xterm.open(document.getElementById('#terminal'), true);
         xterm.toggleFullscreen(true);
         xterm.on('data', command => {
-            console.log(command);
             sendProxy(
                 action('TERMINAL_COMMAND', {
                     command,
@@ -80,6 +102,9 @@ $(() => {
         window.addEventListener("resize", function (event) {
             resize()
         })
+
+        // heartbeat
+        // heartbeat();
     }
 
     ws.onmessage = (event) => {
@@ -87,6 +112,12 @@ $(() => {
         switch (data.type) {
             case 'TERMINAL_PRINT':
                 xterm.write(data.text);
+                break
+            case 'TERMINAL_HEARTBEAT':
+                console.log(data.text) // ok
+                break
+            default:
+                break
         }
     };
 
@@ -95,9 +126,9 @@ $(() => {
     };
 
     ws.onclose = (event) => {
-        console.log(event);
+        console.log("close==>");
         // term.destroy()
-        sendProxy(action("TERMINAL_CLOSE", ""));
+        // sendProxy(action("TERMINAL_CLOSE", ""));
     };
 })
 

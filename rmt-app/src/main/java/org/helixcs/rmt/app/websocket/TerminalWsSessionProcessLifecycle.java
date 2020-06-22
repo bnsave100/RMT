@@ -69,14 +69,25 @@ public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLi
         doBeforeCommandListener(message);
         terminalMessageQueue.putMessage(command);
 
-        writeHandlerThreadPool.submit(new BufferedWriteThread().setManager(terminalProcessListenerManager)
-                .setBufferedWriter(this.stdout)
-                .setCommand(terminalMessageQueue.pollMessage()));
+        writeHandlerThreadPool.submit(
+                new BufferedWriteThread()
+                        .setCommand(terminalMessageQueue.pollMessage())
+                        .setManager(terminalProcessListenerManager)
+                        .setBufferedWriter(this.stdout)
+        );
+    }
+
+    @Override
+    public void terminalHeartbeat(TerminalMessage terminalMessage) {
+        heartbeatHandlerThreadPool.submit(
+                new HeartbeatBufferedReaderThread()
+                        .setManager(terminalProcessListenerManager)
+                        .setWebSocketSession(webSocketSession));
     }
 
     @Override
     public void terminalClose(final TerminalMessage message) {
-        if (!this.ptyProcess.isAlive()) {
+        if (null==this.ptyProcess || !this.ptyProcess.isAlive()) {
             return;
         }
         this.ptyProcess.destroy();
@@ -124,10 +135,16 @@ public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLi
 
         // always with session
         errorHandlerThreadPool.submit(
-                new BufferedReaderThread().setManager(terminalProcessListenerManager).setBufferedReader(this.stderr)
+                new BufferedReaderThread()
+                        .setMessageType(TerminalStructure.MessageType.TERMINAL_PRINT)
+                        .setManager(terminalProcessListenerManager)
+                        .setBufferedReader(this.stderr)
                         .setWebSocketSession(webSocketSession));
         readerHandlerThreadPool.submit(
-                new BufferedReaderThread().setManager(terminalProcessListenerManager).setBufferedReader(this.stdin)
+                new BufferedReaderThread()
+                        .setMessageType(TerminalStructure.MessageType.TERMINAL_PRINT)
+                        .setManager(terminalProcessListenerManager)
+                        .setBufferedReader(this.stdin)
                         .setWebSocketSession(webSocketSession));
 
     }
