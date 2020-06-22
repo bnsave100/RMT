@@ -15,6 +15,7 @@
         <module>rmt-api</module>
         <module>rmt-commons</module>
         <module>rmt-extend</module>
+        <module>rmt-examples</module>
     </modules>
 </project>
 

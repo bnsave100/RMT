@@ -1,11 +1,15 @@
 package org.helixcs.rmt.app.configuration;
 
+import org.helixcs.rmt.api.listener.TerminalProcessListener;
+import org.helixcs.rmt.api.protocol.TerminalMessage;
 import org.helixcs.rmt.api.protocol.TerminalMessageQueue;
 import org.helixcs.rmt.api.lifecycle.TerminalProcessLifecycle;
 import org.helixcs.rmt.api.listener.TerminalProcessListenerManager;
 import org.helixcs.rmt.api.session.TerminalSession2ProcessManager;
 import org.helixcs.rmt.api.session.TerminalSessionManager;
 import org.helixcs.rmt.app.websocket.TerminalHandler;
+import org.helixcs.rmt.app.websocket.TerminalRQ;
+import org.helixcs.rmt.app.websocket.TerminalRS;
 import org.helixcs.rmt.app.websocket.TerminalWsSessionProcessLifecycle;
 import org.helixcs.rmt.extend.listener.DefaultTerminalListenerManager;
 import org.helixcs.rmt.extend.protocol.DefaultTerminalMessageQueue;
@@ -38,22 +42,34 @@ public class AppConfiguration implements WebSocketConfigurer, CommandLineRunner 
         ;
     }
 
-    //@Bean
-    //public TerminalProcessListenerManager terminalProcessListenerManager() {
-    //    SimpleTerminalListenerManager s = new SimpleTerminalListenerManager();
-    //    s.registerListener(new TerminalProcessListener() {
-    //        @Override
-    //        public String listenerName() {
-    //            return "mylistener";
-    //        }
-    //
-    //        @Override
-    //        public void lifeCycleContext(TerminalProcessLifecycle terminalProcessLifecycle) {
-    //            System.out.println("lifeCycle");
-    //        }
-    //    });
-    //    return s;
-    //}
+    @Bean
+    public TerminalProcessListenerManager terminalProcessListenerManager() {
+        DefaultTerminalListenerManager s = new DefaultTerminalListenerManager();
+        s.registerListener(new TerminalProcessListener() {
+            @Override
+            public String listenerName() {
+                return "mylistener";
+            }
+
+            @Override
+            public void lifeCycleContext(TerminalProcessLifecycle terminalProcessLifecycle) {
+                System.out.println("lifeCycle");
+            }
+
+            // get command byte[] before send to pty
+            @Override
+            public void requestToPty(byte[] bytes) {
+
+            }
+
+            // get raw  byte[] response which is returned by pty
+            @Override
+            public void responseFromPty(byte[] bytes) {
+
+            }
+        });
+        return s;
+    }
 
     @Bean
     @Scope("prototype")

@@ -10,7 +10,9 @@ A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
 ![img](../asserts/20200622015739.png)
 
 Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.herokuapp.com/)
-## Start
+## Quick Start
+you can download standalone jar from [release](https://github.com/Xarrow/RMT/releases/).
+
 * for docker running
 
   ```
@@ -23,7 +25,7 @@ Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.heroku
       java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app.jar 
     ```
 
-## Develop
+## For Develop
 
 1. checkout from github
 
@@ -37,12 +39,12 @@ Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.heroku
     
     `java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app\target\rmt-app-1.0-SNAPSHOT.jar`
     
-## Expand
+## Just Expand
 * Protocol
 * Listener
 * SessionManager
 
-## Final
+## Finally
 * For [RuiMei](https://yuruimei.com) .
 * Started from [cloudterm](https://github.com/javaterminal/cloudterm) ,stronger with RMT.
 
