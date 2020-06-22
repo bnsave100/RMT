@@ -1,1 +1,0 @@
-java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app.jar

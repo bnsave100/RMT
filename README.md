@@ -14,7 +14,9 @@ Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.heroku
 * for docker running
 
   ```
-    docker pull helixcs/rmt
+    docker pull helixcs/rmt:latest
+  
+    docker run -d -e PORT=8081 -e JVM_PARMS="" -p 8081:8081 helixcs/rmt:latest
   ```
   
 * for jar running, required jre 1.8+
