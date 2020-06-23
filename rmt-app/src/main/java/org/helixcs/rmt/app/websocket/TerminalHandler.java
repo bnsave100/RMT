@@ -102,9 +102,6 @@ public class TerminalHandler extends TextWebSocketHandler {
                 return session;
             }
         });
-//        if (!session.isOpen() || status.equals(GOING_AWAY)) {
-//
-//        }
     }
 
 }

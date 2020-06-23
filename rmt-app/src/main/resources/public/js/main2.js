@@ -17,14 +17,13 @@ const XtermAction = {
     },
     heartbeat: function () {
         setInterval(() => {
-            if (this.ws !== WebSocket.OPEN) {
+            if (this.ws.readyState !== WebSocket.OPEN) {
                 return;
             }
             this.sendProxy(action('TERMINAL_HEARTBEAT'))
         }, 5000)
     },
     sendProxy: function (message) {
-        debugger
         if (this.ws.readyState === WebSocket.CONNECTING) {
             this.xterm.showOverlay("WebSocket Connecting.")
             return;
@@ -141,7 +140,7 @@ const happyWork = () => {
             xa.resize()
         })
         // 5. heartbeat
-        xa.heartbeat()
+        xa.heartbeat();
     }
 
     ws.onmessage = (event) => {
