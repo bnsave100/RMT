@@ -31,14 +31,14 @@ import org.springframework.web.socket.handler.PerConnectionWebSocketHandler;
  * @Date: 6/17/2020.
  * @Desc:
  */
-@SpringBootApplication(scanBasePackages = "org.helixcs.rmt")
+@SpringBootApplication(scanBasePackages = {"org.helixcs.rmt"})
 @EnableWebSocket
 public class AppConfiguration implements WebSocketConfigurer, CommandLineRunner {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
         webSocketHandlerRegistry.addHandler(webSocketHandler(), "/terminal")
-                .setAllowedOrigins("*")
+            .setAllowedOrigins("*")
         ;
     }
 
@@ -46,6 +46,16 @@ public class AppConfiguration implements WebSocketConfigurer, CommandLineRunner 
     public TerminalProcessListenerManager terminalProcessListenerManager() {
         DefaultTerminalListenerManager s = new DefaultTerminalListenerManager();
         s.registerListener(new TerminalProcessListener() {
+            @Override
+            public void beforeInit(TerminalMessage message) {
+
+            }
+
+            @Override
+            public void afterInit(TerminalMessage message) {
+
+            }
+
             @Override
             public String listenerName() {
                 return "mylistener";

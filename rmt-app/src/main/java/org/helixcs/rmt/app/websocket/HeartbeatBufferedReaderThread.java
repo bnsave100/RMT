@@ -1,5 +1,7 @@
 package org.helixcs.rmt.app.websocket;
 
+import org.helixcs.rmt.api.protocol.AbstractTerminalStructure;
+
 /**
  * @Email: zhangjian12424@gmail.com.
  * @Author: helicxs
@@ -13,7 +15,7 @@ public class HeartbeatBufferedReaderThread extends AbstractBufferedThread {
     @Override
     public void run() {
         TerminalRS ok = new TerminalRS();
-        ok.setType(TerminalStructure.MessageType.TERMINAL_HEARTBEAT);
+        ok.setType(AbstractTerminalStructure.MessageType.TERMINAL_HEARTBEAT);
         ok.setText("ok");
         sendToClient(ok);
     }

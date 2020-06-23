@@ -26,6 +26,10 @@
             <artifactId>rmt-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.helixcs.rmt</groupId>
+            <artifactId>rmt-examples</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>

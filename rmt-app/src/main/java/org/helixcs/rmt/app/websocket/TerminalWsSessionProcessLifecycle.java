@@ -1,22 +1,31 @@
 package org.helixcs.rmt.app.websocket;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pty4j.PtyProcess;
 import com.pty4j.WinSize;
 import com.sun.jna.Platform;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.helixcs.rmt.api.lifecycle.AbstractTerminalProcessLifecycle;
 import org.helixcs.rmt.api.protocol.TerminalMessage;
 import org.helixcs.rmt.api.protocol.TerminalMessageQueue;
 import org.helixcs.rmt.api.listener.TerminalProcessListenerManager;
+import org.helixcs.rmt.api.protocol.AbstractTerminalStructure;
 import org.helixcs.rmt.api.session.TerminalSession2ProcessManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.*;
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadFactory;
 
+import static org.helixcs.rmt.api.protocol.AbstractTerminalStructure.MessageType.TERMINAL_PRINT;
 import static org.helixcs.rmt.commons.TerminalThreadHelper.*;
 
 /**
@@ -45,15 +54,15 @@ public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLi
         if (!init) {
             doInit();
         }
-        int columns = ((TerminalRQ) message).getCols();
+        int columns = ((TerminalRQ)message).getCols();
         //compatible
         if (columns < 1) {
-            columns = ((TerminalRQ) message).getColumns();
+            columns = ((TerminalRQ)message).getColumns();
         }
         if (columns > 0) {
             this.columns = columns;
         }
-        int rows = ((TerminalRQ) message).getRows();
+        int rows = ((TerminalRQ)message).getRows();
         if (rows > 0) {
             this.rows = rows;
         }
@@ -65,29 +74,29 @@ public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLi
         if (!init) {
             doInit();
         }
-        String command = ((TerminalRQ) message).getCommand();
+        String command = ((TerminalRQ)message).getCommand();
         doBeforeCommandListener(message);
         terminalMessageQueue.putMessage(command);
 
         writeHandlerThreadPool.submit(
-                new BufferedWriteThread()
-                        .setCommand(terminalMessageQueue.pollMessage())
-                        .setManager(terminalProcessListenerManager)
-                        .setBufferedWriter(this.stdout)
+            new BufferedWriteThread()
+                .setCommand(terminalMessageQueue.pollMessage())
+                .setManager(terminalProcessListenerManager)
+                .setBufferedWriter(this.stdout)
         );
     }
 
     @Override
     public void terminalHeartbeat(TerminalMessage terminalMessage) {
         heartbeatHandlerThreadPool.submit(
-                new HeartbeatBufferedReaderThread()
-                        .setManager(terminalProcessListenerManager)
-                        .setWebSocketSession(webSocketSession));
+            new HeartbeatBufferedReaderThread()
+                .setManager(terminalProcessListenerManager)
+                .setWebSocketSession(webSocketSession));
     }
 
     @Override
     public void terminalClose(final TerminalMessage message) {
-        if (null==this.ptyProcess || !this.ptyProcess.isAlive()) {
+        if (null == this.ptyProcess || !this.ptyProcess.isAlive()) {
             return;
         }
         this.ptyProcess.destroy();
@@ -96,7 +105,8 @@ public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLi
 
     @Override
     protected void doInit() throws IOException {
-//        doBeforeInitListener(message);
+        //1.before init
+        doBeforeInitListener(null);
 
         if (this.init) {
             return;
@@ -121,34 +131,60 @@ public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLi
         this.stderr = new BufferedReader(new InputStreamReader(this.ptyProcess.getErrorStream()));
         this.stdin = new BufferedReader(new InputStreamReader(this.ptyProcess.getInputStream()));
         this.stdout = new BufferedWriter(new OutputStreamWriter(this.ptyProcess.getOutputStream()));
+        this.init = true;
+        // after init
+        doAfterInitListener(null);
 
+        // todo load banner
+        //
+        try {
+            org.springframework.core.io.Resource resource = new ClassPathResource("rmt.banner");
+            List<String> strings = IOUtils.readLines(resource.getInputStream(), "utf-8");
+
+            for (int i = 0; i < strings.size(); i++) {
+                int finalI = i;
+                HashMap<String, Object> hashMap = new HashMap<String, Object>() {
+                    {
+                        if (finalI == strings.size() - 1) {
+                            put("text", MessageFormat.format("\u001B[?25l\n {0} \u001B[?25l\n\u001B[?25l\n", strings.get(finalI)));
+                        } else {
+                            put("text", MessageFormat.format("\u001B[?25l\n {0} ", strings.get(finalI)));
+                        }
+                        put("type", TERMINAL_PRINT);
+                    }
+                };
+                TextMessage textMessage = new TextMessage(new ObjectMapper().writeValueAsString(hashMap));
+                webSocketSession.sendMessage(textMessage);
+
+                Thread.sleep(200);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //todo to expand
         if (Platform.isWindows()) {
             File file = new File("win_extends");
             this.stdout.write(MessageFormat.format("SET PATH={0};%PATH%;\r", file.getAbsolutePath()));
             this.stdout.flush();
         }
-
-        this.init = true;
-//        doAfterInitListener(message);
         doLifeCycleListener(this);
         doTerminalSession2ProcessBind();
 
         // always with session
         errorHandlerThreadPool.submit(
-                new BufferedReaderThread()
-                        .setMessageType(TerminalStructure.MessageType.TERMINAL_PRINT)
-                        .setManager(terminalProcessListenerManager)
-                        .setBufferedReader(this.stderr)
-                        .setWebSocketSession(webSocketSession));
+            new BufferedReaderThread()
+                .setMessageType(AbstractTerminalStructure.MessageType.TERMINAL_PRINT)
+                .setManager(terminalProcessListenerManager)
+                .setBufferedReader(this.stderr)
+                .setWebSocketSession(webSocketSession));
         readerHandlerThreadPool.submit(
-                new BufferedReaderThread()
-                        .setMessageType(TerminalStructure.MessageType.TERMINAL_PRINT)
-                        .setManager(terminalProcessListenerManager)
-                        .setBufferedReader(this.stdin)
-                        .setWebSocketSession(webSocketSession));
+            new BufferedReaderThread()
+                .setMessageType(AbstractTerminalStructure.MessageType.TERMINAL_PRINT)
+                .setManager(terminalProcessListenerManager)
+                .setBufferedReader(this.stdin)
+                .setWebSocketSession(webSocketSession));
 
     }
-
 
     public void setWebSocketSession(WebSocketSession webSocketSession) {
         this.webSocketSession = webSocketSession;
@@ -156,7 +192,7 @@ public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLi
 
     @Autowired
     public void setTerminalProcessListenerManager(
-            TerminalProcessListenerManager terminalProcessListenerManager) {
+        TerminalProcessListenerManager terminalProcessListenerManager) {
         this.terminalProcessListenerManager = terminalProcessListenerManager;
     }
 
@@ -169,7 +205,6 @@ public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLi
     public void setTerminalSession2ProcessManager(TerminalSession2ProcessManager terminalSession2ProcessManager) {
         super.setTerminalSession2ProcessManager(terminalSession2ProcessManager);
     }
-
 
     @Override
     protected WebSocketSession currentSession() {

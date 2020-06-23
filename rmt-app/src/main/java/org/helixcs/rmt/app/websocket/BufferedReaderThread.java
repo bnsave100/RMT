@@ -2,6 +2,7 @@ package org.helixcs.rmt.app.websocket;
 
 import java.io.BufferedReader;
 
+import org.helixcs.rmt.api.protocol.AbstractTerminalStructure;
 
 /**
  * @Email: zhangjian12424@gmail.com.
@@ -11,9 +12,9 @@ import java.io.BufferedReader;
  */
 public class BufferedReaderThread extends AbstractBufferedThread {
 
-    protected TerminalStructure.MessageType messageType;
+    protected AbstractTerminalStructure.MessageType messageType;
 
-    public BufferedReaderThread setMessageType(TerminalStructure.MessageType messageType) {
+    public BufferedReaderThread setMessageType(AbstractTerminalStructure.MessageType messageType) {
         this.messageType = messageType;
         return this;
     }
@@ -30,7 +31,8 @@ public class BufferedReaderThread extends AbstractBufferedThread {
             int defaultSendLength = 2 * 1024;
             char[] data = new char[defaultSendLength];
             while ((nRead = bufferedReader.read(data, 0, data.length)) != -1) {
-                TerminalRS terminalRS = new TerminalRS().setText(String.valueOf(data, 0, nRead));
+                TerminalRS terminalRS = new TerminalRS();
+                terminalRS.setText(String.valueOf(data, 0, nRead));
                 terminalRS.setType(this.messageType);
                 sendToClient(terminalRS);
             }

@@ -1,4 +1,4 @@
-package org.helixcs.rmt.app.dev;
+package org.helixcs.rmt.examples;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
