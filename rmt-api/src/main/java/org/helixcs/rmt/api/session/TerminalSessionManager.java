@@ -1,6 +1,8 @@
 package org.helixcs.rmt.api.session;
 
+import lombok.experimental.Accessors;
 import org.helixcs.rmt.api.protocol.TagFilter;
+import org.helixcs.rmt.api.protocol.TerminalMessage;
 import org.springframework.web.socket.WebSocketMessage;
 
 import java.io.IOException;
@@ -25,12 +27,16 @@ public interface TerminalSessionManager {
     Map<String, SessionWrapper> sessionMap();
 
     // 点对点发送
+    <T> void p2pSend(final SessionWrapper SessionWrapper, final TerminalMessage terminalMessage) throws IOException;
+
+    @Deprecated
     <T> void p2pSend(final SessionWrapper SessionWrapper, final WebSocketMessage<T> webSocketMessage) throws IOException;
 
     // 广播发送
     <T> void broadCastSend(final Map<String, SessionWrapper> sessionMap, final WebSocketMessage<T> webSocketMessage);
 
     // 过滤发送
+    // todo
     <T> void filteredSend(final TagFilter messageFilter, final Map<String, SessionWrapper> sessionMap, final WebSocketMessage<T> webSocketMessage);
 
 }

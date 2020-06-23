@@ -1,6 +1,7 @@
 package org.helixcs.rmt.api.session;
 
 import org.helixcs.rmt.api.protocol.TagFilter;
+import org.helixcs.rmt.api.protocol.TerminalMessage;
 import org.springframework.web.socket.WebSocketMessage;
 
 import java.io.IOException;
@@ -31,11 +32,16 @@ public abstract class AbstractTerminalSessionManager implements TerminalSessionM
     }
 
     @Override
-    public <T> void p2pSend(SessionWrapper SessionWrapper, WebSocketMessage<T> webSocketMessage) throws IOException {
+    public <T> void p2pSend(SessionWrapper SessionWrapper, TerminalMessage terminalMessage) throws IOException {
         if (!SessionWrapper.webSocketSession().isOpen()) {
             return;
         }
-        SessionWrapper.webSocketSession().sendMessage(webSocketMessage);
+        SessionWrapper.webSocketSession().sendMessage(terminalMessage.webSocketMessage());
+    }
+
+    @Override
+    public <T> void p2pSend(SessionWrapper SessionWrapper, WebSocketMessage<T> webSocketMessage) throws IOException {
+
     }
 
     @Override

@@ -6,10 +6,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
 import org.helixcs.rmt.api.protocol.AbstractTerminalStructure;
 import org.helixcs.rmt.api.protocol.AbstractTerminalStructure.AbstractRS;
 import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
 
 /**
  * @Email: zhangjian12424@gmail.com.
@@ -28,5 +30,4 @@ public class TerminalRS extends AbstractRS implements Serializable {
         String message = new ObjectMapper().writeValueAsString(terminalRS);
         return new TextMessage(message);
     }
-
 }

@@ -1,4 +1,4 @@
-package org.helixcs.rmt.examples;
+package org.helixcs.rmt.examples.session;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -9,19 +9,22 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.annotation.Resource;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
+import org.helixcs.rmt.api.protocol.AbstractTerminalStructure;
+import org.helixcs.rmt.api.protocol.TerminalMessage;
 import org.helixcs.rmt.api.session.SessionWrapper;
 import org.helixcs.rmt.api.session.TerminalSession2ProcessManager;
 import org.helixcs.rmt.api.session.TerminalSessionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import static org.helixcs.rmt.api.protocol.AbstractTerminalStructure.MessageType.TERMINAL_PRINT;
@@ -35,44 +38,49 @@ import static org.helixcs.rmt.api.protocol.AbstractTerminalStructure.MessageType
 
 @Controller
 @RequestMapping("examples")
-public class ExamplesController {
+public class SessionExamplesController {
     @RequestMapping("/")
     public String ops() {
         return "dev.html";
     }
 
-    @Resource
+    @Autowired
     private TerminalSessionManager terminalSessionManager;
 
     @RequestMapping("/api/session/showAllSession")
     @ResponseBody
     public DevApiRS showSession() {
         return new DevApiRS().setDevWsSessionMap(
-            terminalSessionManager.sessionMap().values().stream().collect(Collectors.toMap(
-                x -> x.webSocketSession().getId(), x -> new DevWsSession()
-                    .setOpen(x.webSocketSession().isOpen())
-                    .setRemoteHost(Objects.requireNonNull(x.webSocketSession().getRemoteAddress()).getAddress()
-                        .getHostAddress())
-                    .setRemotePort(Objects.requireNonNull(x.webSocketSession().getRemoteAddress()).getPort())
-                    .setSessionId(x.webSocketSession().getId())
-                    .setUri(Objects.requireNonNull(x.webSocketSession().getUri()).toString()))));
+                terminalSessionManager.sessionMap().values().stream().collect(Collectors.toMap(
+                        x -> x.webSocketSession().getId(), x -> new DevWsSession()
+                                .setOpen(x.webSocketSession().isOpen())
+                                .setRemoteHost(Objects.requireNonNull(x.webSocketSession().getRemoteAddress()).getAddress()
+                                        .getHostAddress())
+                                .setRemotePort(Objects.requireNonNull(x.webSocketSession().getRemoteAddress()).getPort())
+                                .setSessionId(x.webSocketSession().getId())
+                                .setUri(Objects.requireNonNull(x.webSocketSession().getUri()).toString()))));
     }
 
     @RequestMapping("/api/session/p2pPush")
     @ResponseBody
     public String p2pPush(String sessionId, String text) {
         SessionWrapper sessionWrapper = terminalSessionManager.getSession(sessionId);
-        WebSocketSession session = sessionWrapper.webSocketSession();
-        if (session == null) {
+        if (sessionWrapper == null) {
             return "session is invalid";
         }
         try {
             TextMessage textMessage = new TextMessage(
-                new ObjectMapper().writeValueAsString(new HashMap<String, Object>() {{
-                    put("text", "\u001B[?25l\n Hello World");
-                    put("type", TERMINAL_PRINT);
-                }}));
-            terminalSessionManager.p2pSend(sessionWrapper, textMessage);
+                    new ObjectMapper().writeValueAsString(new HashMap<String, Object>() {{
+                        put("text", "\u001B[?25l\n Hello World");
+                        put("type", TERMINAL_PRINT);
+                    }}));
+
+            terminalSessionManager.p2pSend(sessionWrapper, new TerminalMessage() {
+                @Override
+                public <T> WebSocketMessage<T> webSocketMessage() {
+                    return (WebSocketMessage<T>) textMessage;
+                }
+            });
         } catch (IOException e) {
             return "send failed," + e.getMessage();
         } catch (Exception exception) {
@@ -81,12 +89,11 @@ public class ExamplesController {
         return "ok";
     }
 
-    @RequestMapping("/api/session/lrm")
+    @RequestMapping("/api/session/rm")
     @ResponseBody
-    public String lrm(String sessionId) {
+    public String rm(@RequestParam("sessionId") String sessionId) {
         SessionWrapper sessionWrapper = terminalSessionManager.getSession(sessionId);
-        WebSocketSession session = sessionWrapper.webSocketSession();
-        if (session == null) {
+        if (sessionWrapper == null) {
             return "session is invalid";
         }
         try {
@@ -97,10 +104,10 @@ public class ExamplesController {
                 TextMessage textMessage = null;
                 try {
                     textMessage = new TextMessage(
-                        new ObjectMapper().writeValueAsString(new HashMap<String, Object>() {{
-                            put("text", MessageFormat.format("\u001B[?25l\n {0}", x));
-                            put("type", TERMINAL_PRINT);
-                        }}));
+                            new ObjectMapper().writeValueAsString(new HashMap<String, Object>() {{
+                                put("text", MessageFormat.format("\u001B[?25l\n {0}", x));
+                                put("type", TERMINAL_PRINT);
+                            }}));
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
@@ -126,10 +133,10 @@ public class ExamplesController {
         Map<String, SessionWrapper> sessionMap = terminalSessionManager.sessionMap();
         try {
             TextMessage textMessage = new TextMessage(
-                new ObjectMapper().writeValueAsString(new HashMap<String, Object>() {{
-                    put("text", text);
-                    put("type", TERMINAL_PRINT);
-                }}));
+                    new ObjectMapper().writeValueAsString(new HashMap<String, Object>() {{
+                        put("text", text);
+                        put("type", TERMINAL_PRINT);
+                    }}));
             terminalSessionManager.broadCastSend(sessionMap, textMessage);
         } catch (IOException e) {
             return "send failed," + e.getMessage();
@@ -138,7 +145,7 @@ public class ExamplesController {
     }
 
     // TerminalSession2ProcessManager
-    @Resource
+    @Autowired
     private TerminalSession2ProcessManager terminalSession2ProcessManager;
 
     @RequestMapping("/api/process/terminalSession2ProcessManager")
