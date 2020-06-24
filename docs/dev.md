@@ -119,4 +119,5 @@ return "ok";
 
 1 . 此操作在 WebSocket 连接建立之后， 状态为 Open 情况下，处理的自定义协议报文.
 
-[Untitled](https://www.notion.so/6dc9bb2264694f21a9659ee925a9aa5d)
+
+![img](../asserts/c2s_protocol.png)

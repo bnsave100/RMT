@@ -1,4 +1,4 @@
-## RMT , A Cloud Web Terminal
+# RMT , 云 Web 终端
 
 [English](en.md)
 
@@ -7,7 +7,7 @@
 
 一款基于 Spring Boot , Pty4J , WebSocket 开发而来的云 Web 终端.
 
-![img](../asserts/20200622015739.png)
+![img](../asserts/slogo.png)
 
 你可以访问演示站点: [https://rmt-ns.herokuapp.com/](https://rmt-ns.herokuapp.com/)
 
