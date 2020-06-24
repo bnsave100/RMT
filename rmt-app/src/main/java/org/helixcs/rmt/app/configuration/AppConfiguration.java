@@ -9,6 +9,7 @@ import org.helixcs.rmt.api.session.TerminalSessionManager;
 import org.helixcs.rmt.app.websocket.TerminalHandler;
 import org.helixcs.rmt.app.websocket.TerminalWsSessionProcessLifecycle;
 import org.helixcs.rmt.expand.listener.DefaultTerminalListenerManager;
+import org.helixcs.rmt.expand.listener.WindowsExpandCommandLoaderListener;
 import org.helixcs.rmt.expand.protocol.DefaultTerminalMessageQueue;
 import org.helixcs.rmt.expand.session.DefaultTerminalSession2ProcessManager;
 import org.helixcs.rmt.expand.session.DefaultTerminalSessionManager;
@@ -58,6 +59,7 @@ public class AppConfiguration implements WebSocketConfigurer, CommandLineRunner 
     public TerminalProcessListenerManager terminalProcessListenerManager() {
         DefaultTerminalListenerManager listenerManager = new DefaultTerminalListenerManager();
         listenerManager.registerListener(appStartBannerLoadListener);
+        listenerManager.registerListener(new WindowsExpandCommandLoaderListener());
         return listenerManager;
     }
 

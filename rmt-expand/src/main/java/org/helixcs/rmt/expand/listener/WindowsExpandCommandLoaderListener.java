@@ -26,11 +26,6 @@ public class WindowsExpandCommandLoaderListener implements TerminalProcessListen
     }
 
     @Override
-    public void beforeInit(TerminalMessage message) {
-
-    }
-
-    @Override
     public void afterInit(TerminalMessage message, WebSocketSession socketSession,
                           PtyProcess ptyProcess, BufferedWriter stdout, BufferedReader stdin,
                           BufferedReader stderr) {

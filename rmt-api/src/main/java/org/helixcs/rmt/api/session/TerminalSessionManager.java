@@ -1,12 +1,11 @@
 package org.helixcs.rmt.api.session;
 
-import lombok.experimental.Accessors;
+import java.io.IOException;
+import java.util.Map;
+
 import org.helixcs.rmt.api.protocol.TagFilter;
 import org.helixcs.rmt.api.protocol.TerminalMessage;
 import org.springframework.web.socket.WebSocketMessage;
-
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * @Email: zhangjian12424@gmail.com.
