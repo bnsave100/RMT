@@ -14,7 +14,7 @@
         <module>rmt-dependencies</module>
         <module>rmt-api</module>
         <module>rmt-commons</module>
-        <module>rmt-extend</module>
+        <module>rmt-expand</module>
         <module>rmt-examples</module>
     </modules>
 </project>

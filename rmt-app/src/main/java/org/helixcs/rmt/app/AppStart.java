@@ -1,6 +1,7 @@
 package org.helixcs.rmt.app;
 
 import org.helixcs.rmt.app.configuration.AppConfiguration;
+import org.helixcs.rmt.expand.ExpandConfiguration;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -14,7 +15,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class AppStart {
     public static void main(String[] args) {
         ConfigurableApplicationContext run = new SpringApplicationBuilder()
-            .sources(AppConfiguration.class)
+            .sources(AppConfiguration.class, ExpandConfiguration.class)
             .web(WebApplicationType.SERVLET)
             .run(args);
     }

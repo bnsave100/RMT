@@ -50,7 +50,7 @@
             </dependency>
             <dependency>
                 <groupId>org.helixcs.rmt</groupId>
-                <artifactId>rmt-extend</artifactId>
+                <artifactId>rmt-expand</artifactId>
                 <version>${resivion}</version>
             </dependency>
             <dependency>

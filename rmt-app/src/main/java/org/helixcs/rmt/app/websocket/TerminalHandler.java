@@ -38,7 +38,8 @@ public class TerminalHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         log.info(MessageFormat.format("[afterConnectionEstablished] Session={0} closing ,isOpen={1}", session.getId(), session.isOpen()));
-        terminalProcessLifecycle.setWebSocketSession(session);
+        //terminalProcessLifecycle.setWebSocketSession(session);
+        terminalProcessLifecycle.terminalConnection(session);
         terminalSessionManager.registerSession(new SessionWrapper() {
             @Override
             public WebSocketSession webSocketSession() {

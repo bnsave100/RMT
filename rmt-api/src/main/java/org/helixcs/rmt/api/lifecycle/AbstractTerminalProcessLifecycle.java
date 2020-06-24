@@ -37,7 +37,7 @@ public abstract class AbstractTerminalProcessLifecycle implements TerminalProces
     protected TerminalSession2ProcessManager terminalSession2ProcessManager;
 
     public void setTerminalProcessListenerManager(
-            TerminalProcessListenerManager terminalProcessListenerManager) {
+        TerminalProcessListenerManager terminalProcessListenerManager) {
         this.terminalProcessListenerManager = terminalProcessListenerManager;
     }
 
@@ -61,7 +61,9 @@ public abstract class AbstractTerminalProcessLifecycle implements TerminalProces
     }
 
     public void doAfterInitListener(final TerminalMessage terminalMessage) {
-        terminalProcessListenerManager.listenerMap().forEach((key, value) -> value.afterInit(terminalMessage));
+        terminalProcessListenerManager.listenerMap().forEach(
+            (key, value) -> value
+                .afterInit(terminalMessage, currentSession(), currentProcess(), stdout, stdin, stderr));
     }
 
     public void doBeforeCommandListener(final TerminalMessage terminalMessage) {
@@ -91,26 +93,27 @@ public abstract class AbstractTerminalProcessLifecycle implements TerminalProces
     protected abstract PtyProcess currentProcess();
 
     public void doTerminalSession2ProcessBind() {
-        terminalSession2ProcessManager.session2ProcessBind(new DefaultStringBindKey().setKey(currentSession().getId()), new TerminalSession2ProcessMap() {
-            @Override
-            public SessionWrapper sessionWrapper() {
-                return new SessionWrapper() {
-                    @Override
-                    public WebSocketSession webSocketSession() {
-                        return currentSession();
-                    }
-                };
-            }
+        terminalSession2ProcessManager.session2ProcessBind(new DefaultStringBindKey().setKey(currentSession().getId()),
+            new TerminalSession2ProcessMap() {
+                @Override
+                public SessionWrapper sessionWrapper() {
+                    return new SessionWrapper() {
+                        @Override
+                        public WebSocketSession webSocketSession() {
+                            return currentSession();
+                        }
+                    };
+                }
 
-            @Override
-            public ProcessWrapper processWrapper() {
-                return new ProcessWrapper() {
-                    @Override
-                    public PtyProcess ptyProcess() {
-                        return currentProcess();
-                    }
-                };
-            }
-        });
+                @Override
+                public ProcessWrapper processWrapper() {
+                    return new ProcessWrapper() {
+                        @Override
+                        public PtyProcess ptyProcess() {
+                            return currentProcess();
+                        }
+                    };
+                }
+            });
     }
 }

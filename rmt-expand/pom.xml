@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <version>${resivion}</version>
-    <artifactId>rmt-extend</artifactId>
+    <artifactId>rmt-expand</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -21,8 +21,16 @@
             <artifactId>spring-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.helixcs.rmt</groupId>
             <artifactId>rmt-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
     </dependencies>
 </project>

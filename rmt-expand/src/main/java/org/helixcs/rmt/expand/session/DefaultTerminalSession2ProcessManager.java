@@ -1,4 +1,4 @@
-package org.helixcs.rmt.extend.session;
+package org.helixcs.rmt.expand.session;
 
 import org.helixcs.rmt.api.session.AbstractTerminalSession2ProcessManager;
 

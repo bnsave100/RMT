@@ -12,6 +12,9 @@ import java.io.IOException;
  * @Desc:
  */
 public interface TerminalProcessLifecycle {
+    // connection and get session at first time
+    void terminalConnection(WebSocketSession session);
+
     // ready
     void terminalReady(final TerminalMessage terminalMessage) throws IOException, InterruptedException;
 
@@ -27,7 +30,9 @@ public interface TerminalProcessLifecycle {
     // close
     void terminalClose(final TerminalMessage terminalMessage);
 
+    @Deprecated
     void setWebSocketSession(WebSocketSession session);
 
     void terminalHeartbeat(final TerminalMessage terminalMessage);
+
 }

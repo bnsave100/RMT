@@ -39,12 +39,13 @@ public abstract class AbstractBufferedThread extends Thread {
         return this;
     }
 
-
     protected void sendToClient(final TerminalRS terminalRS) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                manager.listenerMap().forEach((key, value) -> value.responseFromPty(terminalRS.getText().getBytes(StandardCharsets.UTF_8)));
+                manager.listenerMap().forEach(
+                    (key, value) -> value
+                        .responseFromPty(terminalRS.getText().getBytes(StandardCharsets.UTF_8), webSocketSession));
             }
         }).start();
         // browser refresh and close session
@@ -52,7 +53,7 @@ public abstract class AbstractBufferedThread extends Thread {
             try {
                 webSocketSession.sendMessage(terminalRS.toTextMessage());
             } catch (Exception ex) {
-                // do nothing
+                ex.printStackTrace();
             }
         }
     }

@@ -1,4 +1,4 @@
-package org.helixcs.rmt.extend.listener;
+package org.helixcs.rmt.expand.listener;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;

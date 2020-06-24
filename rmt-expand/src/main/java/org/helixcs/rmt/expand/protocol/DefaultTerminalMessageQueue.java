@@ -1,4 +1,4 @@
-package org.helixcs.rmt.extend.protocol;
+package org.helixcs.rmt.expand.protocol;
 
 import org.helixcs.rmt.api.protocol.AbstractTerminalMessageQueue;
 

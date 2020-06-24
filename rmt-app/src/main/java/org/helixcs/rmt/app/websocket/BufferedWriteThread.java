@@ -29,7 +29,8 @@ public class BufferedWriteThread extends AbstractBufferedThread {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                manager.listenerMap().values().forEach(x -> x.requestToPty(command.getBytes(StandardCharsets.UTF_8)));
+                manager.listenerMap().values().forEach(
+                    x -> x.requestToPty(command.getBytes(StandardCharsets.UTF_8), bufferedWriter));
             }
         }).start();
         bufferedWriter.write(command);

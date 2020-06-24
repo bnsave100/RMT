@@ -1,4 +1,4 @@
-package org.helixcs.rmt.extend.listener;
+package org.helixcs.rmt.expand.listener;
 
 import org.helixcs.rmt.api.listener.AbstractTerminalProcessListenerManager;
 

@@ -1,6 +1,16 @@
 package org.helixcs.rmt.app.websocket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pty4j.PtyProcess;
 import com.pty4j.WinSize;
@@ -8,25 +18,21 @@ import com.sun.jna.Platform;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.helixcs.rmt.api.lifecycle.AbstractTerminalProcessLifecycle;
-import org.helixcs.rmt.api.protocol.TerminalMessage;
-import org.helixcs.rmt.api.protocol.TerminalMessageQueue;
 import org.helixcs.rmt.api.listener.TerminalProcessListenerManager;
 import org.helixcs.rmt.api.protocol.AbstractTerminalStructure;
+import org.helixcs.rmt.api.protocol.TerminalMessage;
+import org.helixcs.rmt.api.protocol.TerminalMessageQueue;
 import org.helixcs.rmt.api.session.TerminalSession2ProcessManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.*;
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ThreadFactory;
-
 import static org.helixcs.rmt.api.protocol.AbstractTerminalStructure.MessageType.TERMINAL_PRINT;
-import static org.helixcs.rmt.commons.TerminalThreadHelper.*;
+import static org.helixcs.rmt.commons.TerminalThreadHelper.errorHandlerThreadPool;
+import static org.helixcs.rmt.commons.TerminalThreadHelper.heartbeatHandlerThreadPool;
+import static org.helixcs.rmt.commons.TerminalThreadHelper.readerHandlerThreadPool;
+import static org.helixcs.rmt.commons.TerminalThreadHelper.writeHandlerThreadPool;
 
 /**
  * @Email: zhangjian12424@gmail.com.
@@ -38,6 +44,11 @@ import static org.helixcs.rmt.commons.TerminalThreadHelper.*;
 public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLifecycle {
     protected PtyProcess ptyProcess;
     private WebSocketSession webSocketSession;
+
+    @Override
+    public void terminalConnection(WebSocketSession session) {
+        this.webSocketSession = session;
+    }
 
     @Override
     public void terminalReady(final TerminalMessage message) throws IOException {
@@ -135,41 +146,6 @@ public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLi
         // after init
         doAfterInitListener(null);
 
-        // todo load banner
-        //
-        try {
-            org.springframework.core.io.Resource resource = new ClassPathResource("rmt.banner");
-            List<String> strings = IOUtils.readLines(resource.getInputStream(), "utf-8");
-
-            for (int i = 0; i < strings.size(); i++) {
-                int finalI = i;
-                HashMap<String, Object> hashMap = new HashMap<String, Object>() {
-                    {
-                        if (finalI == strings.size() - 1) {
-                            put("text", MessageFormat.format("\u001B[?25l\n {0} \u001B[?25l\n\u001B[?25l\n", strings.get(finalI)));
-                        } else {
-                            put("text", MessageFormat.format("\u001B[?25l\n {0} ", strings.get(finalI)));
-                        }
-                        put("type", TERMINAL_PRINT);
-                    }
-                };
-                TextMessage textMessage = new TextMessage(new ObjectMapper().writeValueAsString(hashMap));
-                webSocketSession.sendMessage(textMessage);
-
-                Thread.sleep(200);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //todo to expand
-        if (Platform.isWindows()) {
-            File file = new File("win_extends");
-            this.stdout.write(MessageFormat.format("SET PATH={0};%PATH%;\r", file.getAbsolutePath()));
-            this.stdout.flush();
-        }
-        doLifeCycleListener(this);
-        doTerminalSession2ProcessBind();
-
         // always with session
         errorHandlerThreadPool.submit(
             new BufferedReaderThread()
@@ -183,6 +159,11 @@ public class TerminalWsSessionProcessLifecycle extends AbstractTerminalProcessLi
                 .setManager(terminalProcessListenerManager)
                 .setBufferedReader(this.stdin)
                 .setWebSocketSession(webSocketSession));
+
+        // life cycle listener
+        doLifeCycleListener(this);
+        // session2Process bind
+        doTerminalSession2ProcessBind();
 
     }
 
