@@ -21,7 +21,7 @@
     docker pull helixcs/rmt
   ```
   
-* for jar running, required jre 1.8+
+* 单 Jar 文件运行，仅支持 Java 1.8 以上版本运行环境.
 
     ```java
       java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app.jar 
