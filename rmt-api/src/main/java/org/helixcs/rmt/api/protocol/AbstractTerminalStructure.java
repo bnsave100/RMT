@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.helixcs.rmt.api.protocol.TerminalMessage;
 import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
 
 import java.io.Serializable;
 
@@ -35,8 +36,6 @@ public abstract class AbstractTerminalStructure implements TerminalMessage, Seri
     @Accessors(chain = true)
     public static abstract class AbstractRS extends AbstractTerminalStructure implements Serializable {
         protected String text;
-
-        public abstract TextMessage toTextMessage() throws Exception;
     }
 
     public static abstract class AbstractRQ extends AbstractTerminalStructure implements Serializable {

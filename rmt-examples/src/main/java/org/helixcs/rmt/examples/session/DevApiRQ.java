@@ -1,4 +1,4 @@
-package org.helixcs.rmt.examples;
+package org.helixcs.rmt.examples.session;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

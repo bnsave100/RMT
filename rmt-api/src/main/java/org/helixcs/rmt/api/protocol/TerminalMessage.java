@@ -1,5 +1,7 @@
 package org.helixcs.rmt.api.protocol;
 
+import org.springframework.web.socket.WebSocketMessage;
+
 /**
  * @Email: zhangjian12424@gmail.com.
  * @Author: helicxs
@@ -7,4 +9,7 @@ package org.helixcs.rmt.api.protocol;
  * @Desc:
  */
 public interface TerminalMessage {
+    default <T> WebSocketMessage<T> webSocketMessage() {
+        return null;
+    }
 }
