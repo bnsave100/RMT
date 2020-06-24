@@ -1,40 +1,33 @@
-## RMT : A Cloud Web Terminal
+# RMT , 云 Web 终端
 
-[中文简体](cn.md)
+[English](en.md)
 
 [![Build Status](https://travis-ci.org/Xarrow/RMT.svg?branch=master)](https://travis-ci.org/Xarrow/RMT)
 [![OpenJDK Status](https://img.shields.io/badge/OpenJDK-1.8-brightgreen.svg)](https://openjdk.java.net/install/)
 
-A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
+一款基于 Spring Boot , Pty4J , WebSocket 开发而来的云 Web 终端.
 
-![img](asserts/20200622015739.png)
-> in Windows
+![img](asserts/slogo.png)
 
-![img](asserts/20200622015740.png)
-> in Linux
+你可以访问演示站点: [https://rmt-ns.herokuapp.com/](https://rmt-ns.herokuapp.com/)
 
+## 快速开始
 
-Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.herokuapp.com/)
+您可以从 [release](https://github.com/Xarrow/RMT/releases/) 下载已经编译好的 jar 包运行.
 
-## Quick Start
-
-you can download standalone jar from [release](https://github.com/Xarrow/RMT/releases/).
-
-* for docker running
+* docker 运行
 
   ```
-    docker pull helixcs/rmt:latest
-  
-    docker run -d -e PORT=8080 -e JVM_PARMS="-Xms512m -Xmx512m -Xmn256m" -p 8080:8080 helixcs/rmt:latest
+    docker pull helixcs/rmt
   ```
   
-* for jar running, required jre 1.8+
+* 单 Jar 文件运行，仅支持 Java 1.8 以上版本运行环境.
 
     ```java
-      java -Xms512m -Xmx512m -Xmn256m -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app.jar 
+      java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app.jar 
     ```
 
-## For Develop
+## 参与开发
 
 1. checkout from github
 
@@ -48,86 +41,19 @@ you can download standalone jar from [release](https://github.com/Xarrow/RMT/rel
     
     `java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app\target\rmt-app-1.0-SNAPSHOT.jar`
     
-## Just Expand
-### todo
-* Protocol 
+## 简单的拓展
 
-   1. `TerminalMessageQueue`
-   
-* Listener
+参考：[RMT 开发文档](docs/dev.md)
 
-  1.`TerminalProcessListener`
-  
-  ```java
-    new TerminalProcessListener() {
-                @Override
-                public String listenerName() {
-                      // declare your listener
-                    return "mylistener";
-                }
-                
-                // get TerminalProcessLifecycle to do anything.
-                @Override
-                public void lifeCycleContext(TerminalProcessLifecycle terminalProcessLifecycle) {
-                    System.out.println("lifeCycle");
-                }
-  
-              // get command byte[] before send to pty
-              @Override
-              public void requestToPty(byte[] bytes) {
-                  
-              }
-  
-              // get raw  byte[] response which is returned by pty
-              @Override
-              public void responseFromPty(byte[] bytes) {
-                  
-              }
-            }
-  ```
-  In this expand , you get lifecycle of process action. Record command log for actions audit.
-  
-  Reference at [rmt-examples]() for detail.
-  
-* Session
+## 最后
 
-  1. `SessionWrapper`
-  
-  2. `TerminalSessionManager`
-  
-  ```java
-     @Bean
-        public TerminalSessionManager terminalSessionManager() {
-            return new DefaultTerminalSessionManager();
-        }
-   ```
-  In this expand,websocket session has been wrappered in `SessionWrapper`.
-  You can manager all websocket sessions which are connected.  
-  List all sessions by `sessionMap`,get a session use `getSession`,
-  event use `p2pSend` or `broadCastSend` to send  messages to client. 
-  
-  3. `TerminalSession2ProcessManager`
-  
-  4. ``
-  
-
-* Process
-    
-   1. `ProcessWrapper`
-   
-   2. `TerminalSession2ProcessManager`
-   
-  
-
-## Final
-* For [RuiMei]() .
-
-* Started from [cloudterm](https://github.com/javaterminal/cloudterm) ,stronger with RMT.
+* 献给 [RuiMei]() .
+* 始于 [cloudterm](https://github.com/javaterminal/cloudterm) , 更胜于此.
 
 ## LICENSE
 
 Apache2
 
-This Project Powered By Jetbrains OpenSource License
+Jetbrains 开源许可授权强力驱动
 
 ![img](asserts/jetbrains.svg)
