@@ -4,4 +4,4 @@ ARG PORT
 ARG JVM_PARMS
 WORKDIR /usr/src/rmt
 COPY  RELEASE/. .
-CMD ['java','-jar','rmt-app.jar']
+CMD ["java","-jar","/usr/src/rmt/rmt-app.jar"]
