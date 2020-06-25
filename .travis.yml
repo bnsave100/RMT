@@ -1,5 +1,5 @@
 language: java
-root: required
+sudo: required
 install: true
 script: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 dist: trusty
@@ -15,9 +15,11 @@ notifications:
 services:
   - docker
 after_success:
-  - docker build -t helixcs/rmt . --build-arg PORT=8080
+  - docker build -t helixcs/rmt .
+  - docker build -t helixcs/rmt4wind -f Dockerfile4Win
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push helixcs/rmt:latest
+  - docker push helics/rmt4win:latest
 
 deploy:
   provider: releases

@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk8:latest
+FROM winamd64/adoptopenjdk:11-jre-hotspot
 MAINTAINER "zhangjian12424@gmail.com"
 ENV PORT=8080
 WORKDIR /usr/src/rmt
