@@ -1,4 +1,4 @@
-## RMT , A Cloud Web Terminal
+# RMT , A Cloud Web Terminal
 
 [中文简体](cn.md)
 
