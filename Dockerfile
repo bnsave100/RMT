@@ -4,7 +4,6 @@ ARG PORT
 ARG JVM_PARMS
 WORKDIR /usr/src/rmt
 COPY  RELEASE/. .
-RUN echo "$PORT"
-RUN echo "$JVM_PARMS"
+RUN echo "$PORT - $JVM_PARMS"
 
 CMD ["java","$JVM_PARMS","-jar","-Dfile.encoding=UTF-8","-Dserver.port=$PORT" ,"rmt-app.jar"]
