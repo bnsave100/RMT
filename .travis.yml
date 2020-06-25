@@ -16,7 +16,7 @@ services:
   - docker
 after_success:
   - docker build -t helixcs/rmt .
-  - docker build -t helixcs/rmt4wind -f Dockerfile4Win
+  - docker build -t helixcs/rmt4wind -f Dockerfile4Win .
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push helixcs/rmt:latest
   - docker push helics/rmt4win:latest
