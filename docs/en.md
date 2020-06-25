@@ -7,25 +7,32 @@
 
 A cloud web terminal based on Spring Boot , Pty4J and WebSocket.
 
-![img](../asserts/20200622015739.png)
+![img](../asserts/slogo.png)
 
 Visit heroku example site: [https://rmt-ns.herokuapp.com/](https://rmt-ns.herokuapp.com/)
+
 ## Quick Start
+
 you can download standalone jar from [release](https://github.com/Xarrow/RMT/releases/).
 
 * for docker running
 
   ```
-    docker pull helixcs/rmt
+    docker pull helixcs/rmt:latest
+  
+    docker run -itd --name rmt-app -e PORT=8081 -p 8080:8081 helixcs/rmt:latest
+ 
   ```
   
 * for jar running, required jre 1.8+
 
     ```java
+  
       java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app.jar 
+  
     ```
 
-## For Develop
+## For Developer
 
 1. checkout from github
 
@@ -37,15 +44,16 @@ you can download standalone jar from [release](https://github.com/Xarrow/RMT/rel
     
 3. run with jar
     
-    `java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app\target\rmt-app-1.0-SNAPSHOT.jar`
+    `java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app\target\rmt-app.jar`
     
 ## Just Expand
-* Protocol
-* Listener
-* SessionManager
+
+Reference at：[RMT Docs](dev.md)
+
 
 ## Finally
 * For [RuiMei](https://yuruimei.com) .
+
 * Started from [cloudterm](https://github.com/javaterminal/cloudterm) ,stronger with RMT.
 
 ## LICENSE

@@ -16,30 +16,35 @@
 您可以从 [release](https://github.com/Xarrow/RMT/releases/) 下载已经编译好的 jar 包运行.
 
 * docker 运行
-
-  ```
-    docker pull helixcs/rmt
-  ```
-  
+    
+     ```
+         docker pull helixcs/rmt:latest
+       
+         docker run -itd --name rmt-app -e PORT=8081 -p 8080:8081 helixcs/rmt:latest
+      
+     ```
+      
 * 单 Jar 文件运行，仅支持 Java 1.8 以上版本运行环境.
 
     ```java
+  
       java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app.jar 
+  
     ```
 
-## 参与开发
+## 开发
 
-1. checkout from github
+1. 从仓库检出
 
     `git@github.com:Xarrow/RMT.git`
 
-2. maven install 
+2. maven 构建 
     
     `mvn install -Dmaven.test.skip=true`
     
-3. run with jar
+3. 运行
     
-    `java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app\target\rmt-app-1.0-SNAPSHOT.jar`
+    `java -Dfile.encoding=UTF-8 -Dserver.port=8080 -jar rmt-app\target\rmt-app.jar`
     
 ## 简单的拓展
 
@@ -47,7 +52,8 @@
 
 ## 最后
 
-* 献给 [RuiMei]() .
+* 献给 [瑞梅](https://yuruimei.com) .
+
 * 始于 [cloudterm](https://github.com/javaterminal/cloudterm) , 更胜于此.
 
 ## LICENSE
