@@ -1,7 +1,7 @@
-FROM adoptopenjdk:11-jre-hotspot
+FROM adoptopenjdk/openjdk8:latest
 MAINTAINER "zhangjian12424@gmail.com"
 ARG PORT
 ARG JVM_PARMS
 WORKDIR /usr/src/rmt
 COPY  RELEASE/. .
-CMD ["java","-jar","/usr/src/rmt/rmt-app.jar"]
+CMD ["java","$JVM_PARMS","-jar","-Dfile.encoding=UTF-8","-Dserver.port=$PORT" ,"rmt-app.jar"]

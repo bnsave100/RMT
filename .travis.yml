@@ -1,12 +1,12 @@
 language: java
-sudo: required
+root: required
 install: true
 script: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 dist: trusty
 jdk:
   - openjdk8
 
-notification:
+notifications:
   email:
     - zhangjian12424@gmail.com
   on_success: never
@@ -23,6 +23,6 @@ deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   file: RELEASE/rmt-app.jar
-  skip_cleanup: true
+  cleanup: true
   on:
     tags: true
