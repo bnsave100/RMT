@@ -15,7 +15,7 @@ notifications:
 services:
   - docker
 after_success:
-  - docker build -t helixcs/rmt . --build-arg PORT=8080 --build-arg JVM_PARMS="-Xms512m -Xmx512m -Xmn256m"
+  - docker build -t helixcs/rmt . --build-arg PORT=8080
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push helixcs/rmt:latest
 
