@@ -16,6 +16,8 @@
         <module>rmt-commons</module>
         <module>rmt-expand</module>
         <module>rmt-examples</module>
+        <module>rmt-spring-boot-starter</module>
+        <module>rmt-bom</module>
     </modules>
 </project>
 
