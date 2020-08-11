@@ -11,6 +11,7 @@ import org.helixcs.rmt.app.websocket.TerminalWsSessionProcessLifecycle;
 import org.helixcs.rmt.expand.listener.DefaultTerminalListenerManager;
 import org.helixcs.rmt.expand.listener.WindowsExpandCommandLoaderListener;
 import org.helixcs.rmt.expand.protocol.DefaultTerminalMessageQueue;
+import org.helixcs.rmt.expand.session.ConsulTerminalSessionManager;
 import org.helixcs.rmt.expand.session.DefaultTerminalSession2ProcessManager;
 import org.helixcs.rmt.expand.session.DefaultTerminalSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;

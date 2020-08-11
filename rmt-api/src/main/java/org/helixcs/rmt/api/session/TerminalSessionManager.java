@@ -38,4 +38,8 @@ public interface TerminalSessionManager {
     // todo
     <T> void filteredSend(final TagFilter messageFilter, final Map<String, SessionWrapper> sessionMap, final WebSocketMessage<T> webSocketMessage);
 
+    default void addListener(TerminalSessionListener terminalSessionListener) {
+
+    }
+
 }

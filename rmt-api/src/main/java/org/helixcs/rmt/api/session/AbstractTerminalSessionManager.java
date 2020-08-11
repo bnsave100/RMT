@@ -12,8 +12,8 @@ public abstract class AbstractTerminalSessionManager implements TerminalSessionM
     private final Map<String, SessionWrapper> sessionMap = new ConcurrentHashMap<>();
 
     @Override
-    public void registerSession(SessionWrapper SessionWrapper) {
-        sessionMap.put(SessionWrapper.webSocketSession().getId(), SessionWrapper);
+    public void registerSession(SessionWrapper sessionWrapper) {
+        sessionMap.put(sessionWrapper.webSocketSession().getId(), sessionWrapper);
     }
 
     @Override
@@ -22,8 +22,8 @@ public abstract class AbstractTerminalSessionManager implements TerminalSessionM
     }
 
     @Override
-    public void removeSession(SessionWrapper SessionWrapper) {
-        removeSession(SessionWrapper.webSocketSession().getId());
+    public void removeSession(SessionWrapper sessionWrapper) {
+        removeSession(sessionWrapper.webSocketSession().getId());
     }
 
     @Override
