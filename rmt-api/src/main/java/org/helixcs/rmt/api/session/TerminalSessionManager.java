@@ -38,6 +38,7 @@ public interface TerminalSessionManager {
     // todo
     <T> void filteredSend(final TagFilter messageFilter, final Map<String, SessionWrapper> sessionMap, final WebSocketMessage<T> webSocketMessage);
 
+    // Session 变动监听
     default void addListener(TerminalSessionListener terminalSessionListener) {
 
     }

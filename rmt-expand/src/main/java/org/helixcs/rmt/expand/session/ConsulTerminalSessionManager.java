@@ -1,12 +1,18 @@
 package org.helixcs.rmt.expand.session;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.Objects;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.net.HostAndPort;
 import com.orbitz.consul.Consul;
 import com.orbitz.consul.KeyValueClient;
 import com.orbitz.consul.cache.KVCache;
-import com.orbitz.consul.model.kv.Value;
+import com.orbitz.consul.model.agent.ImmutableRegistration;
+import com.orbitz.consul.model.agent.Registration.RegCheck;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
@@ -15,13 +21,27 @@ import org.helixcs.rmt.api.session.AbstractTerminalSessionManager;
 import org.helixcs.rmt.api.session.SessionWrapper;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.io.Serializable;
-import java.nio.charset.Charset;
-import java.util.Objects;
-import java.util.Optional;
-
 @Slf4j
 public class ConsulTerminalSessionManager extends AbstractTerminalSessionManager {
+    @SneakyThrows
+    public static void main(String[] args) throws IOException {
+        ConsulTerminalSessionManager ctsm = new ConsulTerminalSessionManager();
+
+        //  register a service
+        String serviceId = "myServiceId";
+        ImmutableRegistration build = ImmutableRegistration.builder()
+            .id(serviceId)
+            .name("myService")
+            .check(RegCheck.http("https://baidu.com", 10L))
+            .tags(Collections.singletonList("tag1"))
+            .meta(Collections.singletonMap("version", "1.0"))
+            .build();
+        ctsm.client.agentClient().register(build);
+        ctsm.client.agentClient().pass(serviceId);
+
+        System.in.read();
+
+    }
 
     private static final int DEFAULT_PORT = 8500;
     private static final int DEFAULT_WATCH_TIMEOUT = 60 * 1000;
@@ -61,7 +81,8 @@ public class ConsulTerminalSessionManager extends AbstractTerminalSessionManager
     public SessionWrapper getSession(String sessionId) {
         String s = kvClient.getValueAsString(sessionId, Charsets.UTF_8).orElse(null);
         //if (s != null) {
-        //    InternalConsulWSValue internalConsulWSValue = new ObjectMapper().readValue(s, InternalConsulWSValue.class);
+        //    InternalConsulWSValue internalConsulWSValue = new ObjectMapper().readValue(s, InternalConsulWSValue
+        //    .class);
         //    return new SessionWrapper() {
         //        @Override
         //        public WebSocketSession webSocketSession() {
