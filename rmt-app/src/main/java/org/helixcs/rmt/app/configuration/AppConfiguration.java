@@ -56,11 +56,12 @@ public class AppConfiguration implements WebSocketConfigurer, CommandLineRunner 
         return new TerminalWsSessionProcessLifecycle();
     }
 
+    // 监听器管理
     @Bean
     public TerminalProcessListenerManager terminalProcessListenerManager() {
         DefaultTerminalListenerManager listenerManager = new DefaultTerminalListenerManager();
-        listenerManager.registerListener(appStartBannerLoadListener);
-        listenerManager.registerListener(new WindowsExpandCommandLoaderListener());
+//        listenerManager.registerListener(appStartBannerLoadListener);
+//        listenerManager.registerListener(new WindowsExpandCommandLoaderListener());
         return listenerManager;
     }
 

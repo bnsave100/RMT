@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("ws")
 public class IndexController {
+    
     @RequestMapping("index")
     public String index() {
         return "index.html";
     }
-
+    
     @RequestMapping("multiple")
     public String multiple() {
         return "multiple.html";
     }
-
+    
 }
