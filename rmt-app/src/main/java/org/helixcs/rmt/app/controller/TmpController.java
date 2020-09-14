@@ -1,0 +1,19 @@
+package org.helixcs.rmt.app.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * @Email: zhangjian12424@gmail.com.
+ * @Author: helicxs
+ * @Date: 6/17/2020.
+ * @Desc:
+ */
+
+public class TmpController {
+    
+    public String index() {
+        return "rmt.html";
+    }
+    
+}

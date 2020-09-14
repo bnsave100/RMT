@@ -1,29 +1,8 @@
 package org.helixcs.rmt.app.configuration;
 
-import org.helixcs.rmt.api.lifecycle.TerminalProcessLifecycle;
-import org.helixcs.rmt.api.listener.TerminalProcessListener;
-import org.helixcs.rmt.api.listener.TerminalProcessListenerManager;
-import org.helixcs.rmt.api.protocol.TerminalMessageQueue;
-import org.helixcs.rmt.api.session.TerminalSession2ProcessManager;
-import org.helixcs.rmt.api.session.TerminalSessionManager;
-import org.helixcs.rmt.app.websocket.TerminalHandler;
-import org.helixcs.rmt.app.websocket.TerminalWsSessionProcessLifecycle;
-import org.helixcs.rmt.expand.listener.DefaultTerminalListenerManager;
-import org.helixcs.rmt.expand.listener.WindowsExpandCommandLoaderListener;
-import org.helixcs.rmt.expand.protocol.DefaultTerminalMessageQueue;
-import org.helixcs.rmt.expand.session.ConsulTerminalSessionManager;
-import org.helixcs.rmt.expand.session.DefaultTerminalSession2ProcessManager;
-import org.helixcs.rmt.expand.session.DefaultTerminalSessionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.springframework.web.socket.handler.PerConnectionWebSocketHandler;
 
 /**
  * @Email: zhangjian12424@gmail.com.
@@ -33,56 +12,8 @@ import org.springframework.web.socket.handler.PerConnectionWebSocketHandler;
  */
 @SpringBootApplication(scanBasePackages = {"org.helixcs.rmt"})
 @EnableWebSocket
-public class AppConfiguration implements WebSocketConfigurer, CommandLineRunner {
-    @Autowired
-    private TerminalProcessListener appStartBannerLoadListener;
-
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(webSocketHandler(), "/terminal")
-            .setAllowedOrigins("*")
-        ;
-    }
-
-    @Bean
-    public WebSocketHandler webSocketHandler() {
-        return new PerConnectionWebSocketHandler(TerminalHandler.class);
-    }
-
-    // lifecycle
-    @Bean
-    @Scope("prototype")
-    public TerminalProcessLifecycle terminalProcessLifecycle() {
-        return new TerminalWsSessionProcessLifecycle();
-    }
-
-    // 监听器管理
-    @Bean
-    public TerminalProcessListenerManager terminalProcessListenerManager() {
-        DefaultTerminalListenerManager listenerManager = new DefaultTerminalListenerManager();
-        //        listenerManager.registerListener(appStartBannerLoadListener);
-        //        listenerManager.registerListener(new WindowsExpandCommandLoaderListener());
-        return listenerManager;
-    }
-
-    // messageQueue
-    @Bean
-    public TerminalMessageQueue<String> terminalMessageQueue() {
-        return new DefaultTerminalMessageQueue();
-    }
-
-    // sessionManager
-    @Bean
-    public TerminalSessionManager terminalSessionManager() {
-        return new DefaultTerminalSessionManager();
-    }
-
-    // session2processManager
-    @Bean
-    public TerminalSession2ProcessManager terminalSession2ProcessManager() {
-        return new DefaultTerminalSession2ProcessManager();
-    }
-
+public class AppConfiguration implements CommandLineRunner {
+    
     @Override
     public void run(String... args) throws Exception {
         System.out.println(":)");
