@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>rmt-dependencies</artifactId>
         <groupId>org.helixcs.rmt</groupId>
-        <version>${resivion}</version>
+        <version>${revision}</version>
         <relativePath>../rmt-dependencies/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>${resivion}</version>
+    <version>${revision}</version>
     <artifactId>rmt-app</artifactId>
     <packaging>jar</packaging>
     <properties>
         <output.jar.directory>../RELEASE</output.jar.directory>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.helixcs.rmt</groupId>
@@ -26,27 +26,23 @@
             <artifactId>rmt-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.helixcs.rmt</groupId>
-            <artifactId>rmt-examples</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.springframework.boot</groupId>-->
+<!--                    <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-undertow</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -60,8 +56,8 @@
             <artifactId>rmt-expand</artifactId>
         </dependency>
     </dependencies>
-    
-    
+
+
     <build>
         <finalName>${artifactId}</finalName>
         <plugins>

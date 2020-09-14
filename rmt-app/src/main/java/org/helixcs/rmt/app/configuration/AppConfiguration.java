@@ -60,8 +60,8 @@ public class AppConfiguration implements WebSocketConfigurer, CommandLineRunner 
     @Bean
     public TerminalProcessListenerManager terminalProcessListenerManager() {
         DefaultTerminalListenerManager listenerManager = new DefaultTerminalListenerManager();
-//        listenerManager.registerListener(appStartBannerLoadListener);
-//        listenerManager.registerListener(new WindowsExpandCommandLoaderListener());
+        //        listenerManager.registerListener(appStartBannerLoadListener);
+        //        listenerManager.registerListener(new WindowsExpandCommandLoaderListener());
         return listenerManager;
     }
 

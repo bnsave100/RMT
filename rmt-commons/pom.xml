@@ -5,11 +5,11 @@
     <parent>
         <artifactId>rmt-dependencies</artifactId>
         <groupId>org.helixcs.rmt</groupId>
-        <version>${resivion}</version>
+        <version>${revision}</version>
         <relativePath>../rmt-dependencies/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>${resivion}</version>
+    <version>${revision}</version>
     <artifactId>rmt-commons</artifactId>
 
 </project>

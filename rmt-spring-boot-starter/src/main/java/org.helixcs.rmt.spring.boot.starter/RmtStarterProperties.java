@@ -8,6 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @Accessors(chain = true)
 public class RmtStarterProperties {
-    
+
     private String web;
 }
